@@ -24,17 +24,17 @@ fragment MyPlayArea_me on Player {
     ...Card_card
   }
   successionPoints
+  isTurnPlayer
 }
 `;
 
 export const MyPlayArea: React.FC<{
   me: MyPlayArea_MeFragment;
-  isTurnPlayer: boolean;
-}> = ({ me, isTurnPlayer }) => {
+}> = ({ me }) => {
   return (
     <div
       style={{
-        border: isTurnPlayer ? `1px solid ${blue[300]}` : "",
+        border: me.isTurnPlayer ? `1px solid ${blue[300]}` : "",
       }}
     >
       {me && (

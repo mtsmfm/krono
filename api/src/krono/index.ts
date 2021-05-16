@@ -81,7 +81,7 @@ export interface State {
   randomMarket: Card[];
   awaitingActions: Array<{
     playerId: string;
-    type: Action["type"];
+    type: Exclude<Action["type"], "INIT">;
   }>;
   turnPlayerIndex: number;
   firstCoronationCeremonyDeclaredPlayerIndex: number | undefined;

@@ -64,6 +64,17 @@ const Player = objectType({
     t.nonNull.int("linkRemains");
     t.int("successionPoints");
     t.nonNull.boolean("coronationCeremonyDeclared");
+    t.nonNull.boolean("isTurnPlayer", {
+      resolve(p, _, { gameState }) {
+        return p.id === gameState.players[gameState.turnPlayerIndex].id;
+      },
+    });
+    t.nonNull.list.nonNull.field("awaitingActions", {
+      type: AwaitingAction,
+      resolve(p, _, { gameState }) {
+        return gameState.awaitingActions.filter((a) => a.playerId === p.id);
+      },
+    });
   },
 });
 
@@ -139,8 +150,8 @@ const Query = queryType({
   definition(t) {
     t.field("game", {
       type: Game,
-      resolve() {
-        return state;
+      resolve(_x, _y, { gameState }) {
+        return gameState;
       },
     });
   },
@@ -184,6 +195,7 @@ const Mutation = mutationType({
 
 export interface Context {
   playerId: string | undefined;
+  gameState: State;
 }
 
 const schema = makeSchema({
@@ -215,6 +227,7 @@ const server = new ApolloServer({
   context({ req }) {
     return {
       playerId: req.header("x-krono-player-id"),
+      gameState: state,
     };
   },
 });

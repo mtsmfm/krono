@@ -13,17 +13,17 @@ fragment OpponentsPlayArea_opponent on Player {
   linkRemains
   playingCards { id }
   successionPoints
+  isTurnPlayer
 }
 `;
 
 export const OpponentsPlayArea: React.FC<{
-  isTurnPlayer: boolean;
   opponent: OpponentsPlayArea_OpponentFragment;
-}> = ({ isTurnPlayer, opponent }) => {
+}> = ({ opponent }) => {
   return (
     <div
       style={{
-        border: isTurnPlayer ? `1px solid ${blue[300]}` : "",
+        border: opponent.isTurnPlayer ? `1px solid ${blue[300]}` : "",
       }}
     >
       <Typography variant="subtitle1">{opponent.id}</Typography>

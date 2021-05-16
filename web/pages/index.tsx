@@ -69,10 +69,7 @@ export default function Home() {
       <Grid container>
         {result.data.game.opponents?.map((o) => (
           <Grid item key={o.id} xs={4}>
-            <OpponentsPlayArea
-              isTurnPlayer={result.data?.game?.turnPlayer.id === o.id}
-              opponent={o}
-            />
+            <OpponentsPlayArea opponent={o} />
           </Grid>
         ))}
       </Grid>
@@ -83,14 +80,7 @@ export default function Home() {
 
       <Divider />
 
-      {result.data.game.me && (
-        <MyPlayArea
-          me={result.data.game.me}
-          isTurnPlayer={
-            result.data.game.turnPlayer.id === result.data.game.me.id
-          }
-        />
-      )}
+      {result.data.game.me && <MyPlayArea me={result.data.game.me} />}
 
       <Divider />
 
@@ -119,11 +109,7 @@ export default function Home() {
         ))}
       </Select>
 
-      <HandEliminationDialog
-        game={result.data.game}
-        playerId={currentPlayerId}
-        refetch={refetch}
-      />
+      <HandEliminationDialog game={result.data.game} refetch={refetch} />
     </Container>
   );
 }

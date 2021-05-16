@@ -13,9 +13,10 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 /* GraphQL */ `
 fragment HandEliminationDialog_game on Game {
-  awaitingActions {
-    playerId
-    type
+  me {
+    awaitingActions {
+      type
+    }
   }
 }
 `;
@@ -28,16 +29,17 @@ mutation HandElimination($coin: Int!) {
 
 export const HandEliminationDialog: React.FC<{
   game: HandEliminationDialog_GameFragment;
-  playerId: string;
   refetch: () => void;
-}> = ({ game, playerId, refetch }) => {
+}> = ({ game, refetch }) => {
   const [{ fetching }, action] = useHandEliminationMutation();
 
   return (
     <Dialog
-      open={game.awaitingActions.some(
-        (a) => a.type === ActionType.HandElimination && a.playerId === playerId
-      )}
+      open={
+        !!game.me?.awaitingActions.some(
+          (a) => a.type === ActionType.HandElimination
+        )
+      }
     >
       <DialogTitle>Hand elimination</DialogTitle>
       {fetching ? (
