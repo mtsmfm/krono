@@ -1,13 +1,5 @@
 import { ApolloServer } from "apollo-server";
-import {
-  exists,
-  mkdir,
-  mkdirSync,
-  readFileSync,
-  stat,
-  statSync,
-  writeFileSync,
-} from "fs";
+import { mkdirSync, readFileSync, statSync, writeFileSync } from "fs";
 import {
   makeSchema,
   queryType,
