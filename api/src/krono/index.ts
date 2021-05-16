@@ -121,7 +121,7 @@ const drawCard = (player: Player, count: number) => {
       player.discardPile = [];
     }
 
-    const card = player.drawPile[0];
+    const card = player.drawPile.shift();
 
     if (card) {
       player.hand.push(card);
