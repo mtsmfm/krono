@@ -328,13 +328,14 @@ export const reducer = produce((state: State, action: Action) => {
     case "BUY_CARD": {
       const turnPlayer = state.players[state.turnPlayerIndex];
 
-      const [card] = extractValidCard(
+      const [card, cardMaster] = extractValidCard(
         [state.basicMarket, state.randomMarket],
         { id: action.cardId },
         (_, m) => m.cost <= turnPlayer.currentCoins
       );
 
       turnPlayer.discardPile.push(card);
+      turnPlayer.currentCoins -= cardMaster.cost;
 
       state.awaitingActions = [
         { type: "BUY_CARD", playerId: turnPlayer.id },
