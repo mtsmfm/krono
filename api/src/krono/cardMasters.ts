@@ -122,5 +122,12 @@ export const getCurse = () => {
 };
 
 export const getPrincesses = () => {
-  return CARD_MASTERS.filter((c) => c.type === "princess");
+  const cards = CARD_MASTERS.filter((c) => c.type === "princess");
+
+  // TODO: Remove this
+  // mock implementation
+  if (cards.length === 1) {
+    return Array.from({ length: 4 }).map(() => cards[0]);
+  }
+  return cards;
 };
