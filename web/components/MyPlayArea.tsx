@@ -3,6 +3,7 @@ import { MyPlayArea_MeFragment } from "../generated/urql";
 import Grid from "@material-ui/core/Grid";
 import React from "react";
 import { Card } from "../components/Card";
+import blue from "@material-ui/core/colors/blue";
 
 /* GraphQL */ `
 fragment MyPlayArea_me on Player {
@@ -26,27 +27,38 @@ fragment MyPlayArea_me on Player {
 }
 `;
 
-export const MyPlayArea: React.FC<{ me: MyPlayArea_MeFragment }> = ({ me }) => {
+export const MyPlayArea: React.FC<{
+  me: MyPlayArea_MeFragment;
+  isTurnPlayer: boolean;
+}> = ({ me, isTurnPlayer }) => {
   return (
-    <div>
-      <Typography variant="subtitle1">{me.id}</Typography>
-      <Typography variant="caption">Hand</Typography>
-      <Grid container>
-        {me.hand.map((c, i) => (
-          <Grid item key={c?.id || i} xs={1}>
-            <Card card={c}></Card>
+    <div
+      style={{
+        border: isTurnPlayer ? `1px solid ${blue[300]}` : "",
+      }}
+    >
+      {me && (
+        <>
+          <Typography variant="subtitle1">{me.id}</Typography>
+          <Typography variant="caption">Hand</Typography>
+          <Grid container>
+            {me.hand.map((c, i) => (
+              <Grid item key={c?.id || i} xs={1}>
+                <Card card={c}></Card>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <Typography variant="caption" display="block">
-        Current coins: {me.currentCoins}
-      </Typography>
-      <Typography variant="caption" display="block">
-        Discard pile: {me.discardPile.length}
-      </Typography>
-      <Typography variant="caption" display="block">
-        Draw pile: {me.drawPile.length}
-      </Typography>
+          <Typography variant="caption" display="block">
+            Current coins: {me.currentCoins}
+          </Typography>
+          <Typography variant="caption" display="block">
+            Discard pile: {me.discardPile.length}
+          </Typography>
+          <Typography variant="caption" display="block">
+            Draw pile: {me.drawPile.length}
+          </Typography>
+        </>
+      )}
     </div>
   );
 };

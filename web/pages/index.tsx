@@ -9,6 +9,7 @@ import { MyPlayArea } from "../components/MyPlayArea";
 import { OpponentsPlayArea } from "../components/OpponentsPlayArea";
 import { SharedResourceArea } from "../components/SharedResouceArea";
 import { HandEliminationDialog } from "../components/HandEliminationDialog";
+import Typography from "@material-ui/core/Typography";
 
 /* GraphQL */ `
 query Root {
@@ -28,6 +29,7 @@ query Root {
     }
     firstCoronationCeremonyDeclaredPlayerIndex
     overtime
+    turnPlayer { id }
     ...SharedResourceArea_game
     ...HandEliminationDialog_game
   }
@@ -67,7 +69,10 @@ export default function Home() {
       <Grid container>
         {result.data.game.opponents?.map((o) => (
           <Grid item key={o.id} xs={4}>
-            <OpponentsPlayArea opponent={o} />
+            <OpponentsPlayArea
+              isTurnPlayer={result.data?.game?.turnPlayer.id === o.id}
+              opponent={o}
+            />
           </Grid>
         ))}
       </Grid>
@@ -78,7 +83,26 @@ export default function Home() {
 
       <Divider />
 
-      {result.data.game.me && <MyPlayArea me={result.data.game.me} />}
+      {result.data.game.me && (
+        <MyPlayArea
+          me={result.data.game.me}
+          isTurnPlayer={
+            result.data.game.turnPlayer.id === result.data.game.me.id
+          }
+        />
+      )}
+
+      <Divider />
+
+      <Typography variant="caption">Debug</Typography>
+
+      <ul>
+        {result.data.game.awaitingActions.map((a) => (
+          <li key={`${a.playerId}-${a.type}`}>
+            {a.playerId}: {a.type}
+          </li>
+        ))}
+      </ul>
 
       <Divider />
 
