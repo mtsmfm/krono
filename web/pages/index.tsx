@@ -8,6 +8,7 @@ import Divider from "@material-ui/core/Divider";
 import { MyPlayArea } from "../components/MyPlayArea";
 import { OpponentsPlayArea } from "../components/OpponentsPlayArea";
 import { SharedResourceArea } from "../components/SharedResouceArea";
+import { HandEliminationDialog } from "../components/HandEliminationDialog";
 
 /* GraphQL */ `
 query Root {
@@ -30,6 +31,7 @@ query Root {
     turnPlayerIndex
     winnerPlayerId
     ...SharedResourceArea_game
+    ...HandEliminationDialog_game
   }
 }
 `;
@@ -94,6 +96,12 @@ export default function Home() {
           </MenuItem>
         ))}
       </Select>
+
+      <HandEliminationDialog
+        game={result.data.game}
+        playerId={currentPlayerId}
+        refetch={refetch}
+      />
     </Container>
   );
 }
