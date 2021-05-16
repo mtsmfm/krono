@@ -20,9 +20,6 @@ export const Market: React.FC<{ game: Market_GameFragment }> = ({ game }) => {
   return (
     <>
       <Typography variant="caption" display="block">
-        Market
-      </Typography>
-      <Typography variant="caption" display="block">
         Basic market
       </Typography>
       <Grid container>
@@ -35,11 +32,13 @@ export const Market: React.FC<{ game: Market_GameFragment }> = ({ game }) => {
       <Typography variant="caption" display="block">
         Random market
       </Typography>
-      {Object.entries(randomMarketCards).map(([_, cards]) => (
-        <Grid item key={cards[0].id} xs={1}>
-          <Card card={cards[0]} />x {cards.length}
-        </Grid>
-      ))}
+      <Grid container>
+        {Object.entries(randomMarketCards).map(([_, cards]) => (
+          <Grid item key={cards[0].id} xs={1}>
+            <Card card={cards[0]} />x {cards.length}
+          </Grid>
+        ))}
+      </Grid>
       <Typography variant="caption" display="block">
         Supply pile: {game.supplyPile.length}
       </Typography>
