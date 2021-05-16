@@ -106,7 +106,7 @@ export const getApprenticeMaid = () => {
 };
 
 export const getRoyalMaid = () => {
-  return findById(4)!;
+  return findById(5)!;
 };
 
 export const getSenator = () => {

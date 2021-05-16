@@ -108,7 +108,7 @@ const Game = objectType({
     t.nonNull.list.nonNull.field("randomMarket", { type: Card });
     t.nonNull.list.nonNull.field("awaitingActions", { type: AwaitingAction });
     t.nonNull.int("turnPlayerIndex");
-    t.nonNull.int("firstCoronationCeremonyDeclaredPlayerIndex");
+    t.int("firstCoronationCeremonyDeclaredPlayerIndex");
     t.nonNull.boolean("overtime");
     t.id("winnerPlayerId");
   },
