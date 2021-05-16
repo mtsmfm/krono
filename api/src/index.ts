@@ -114,10 +114,24 @@ const Game = objectType({
     t.nonNull.list.nonNull.field("basicMarket", { type: Card });
     t.nonNull.list.nonNull.field("randomMarket", { type: Card });
     t.nonNull.list.nonNull.field("awaitingActions", { type: AwaitingAction });
-    t.nonNull.int("turnPlayerIndex");
     t.int("firstCoronationCeremonyDeclaredPlayerIndex");
     t.nonNull.boolean("overtime");
-    t.id("winnerPlayerId");
+    t.nonNull.field("turnPlayer", {
+      type: Player,
+      resolve(g) {
+        return g.players[g.turnPlayerIndex];
+      },
+    });
+    t.field("winner", {
+      type: Player,
+      resolve(g) {
+        if (g.winnerPlayerId) {
+          return g.players.find((p) => p.id === g.winnerPlayerId)!;
+        } else {
+          return null;
+        }
+      },
+    });
   },
 });
 

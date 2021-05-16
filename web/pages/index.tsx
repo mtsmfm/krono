@@ -28,8 +28,6 @@ query Root {
     }
     firstCoronationCeremonyDeclaredPlayerIndex
     overtime
-    turnPlayerIndex
-    winnerPlayerId
     ...SharedResourceArea_game
     ...HandEliminationDialog_game
   }
