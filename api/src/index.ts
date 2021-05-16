@@ -11,6 +11,7 @@ import {
   stringArg,
   fieldAuthorizePlugin,
   enumType,
+  idArg,
 } from "nexus";
 import path, { dirname, join } from "path";
 import { initialState, reducer, State } from "./krono";
@@ -184,6 +185,56 @@ const Mutation = mutationType({
         state = reducer(state, {
           type: "HAND_ELIMINATION",
           coin,
+          playerId,
+        });
+
+        return true;
+      },
+    });
+    t.boolean("actionPlayHand", {
+      args: {
+        cardId: nonNull(idArg()),
+      },
+      resolve(_, { cardId }, { playerId }) {
+        if (playerId === undefined) {
+          throw "invalid";
+        }
+
+        state = reducer(state, {
+          type: "PLAY_HAND",
+          cardId,
+          playerId,
+        });
+
+        return true;
+      },
+    });
+    t.boolean("actionBuyCard", {
+      args: {
+        cardId: nonNull(idArg()),
+      },
+      resolve(_, { cardId }, { playerId }) {
+        if (playerId === undefined) {
+          throw "invalid";
+        }
+
+        state = reducer(state, {
+          type: "BUY_CARD",
+          playerId,
+          cardId,
+        });
+
+        return true;
+      },
+    });
+    t.boolean("actionEndTurn", {
+      resolve(_, {}, { playerId }) {
+        if (playerId === undefined) {
+          throw "invalid";
+        }
+
+        state = reducer(state, {
+          type: "END_TURN",
           playerId,
         });
 

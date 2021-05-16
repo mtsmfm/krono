@@ -15,10 +15,11 @@ fragment SharedResourceArea_game on Game {
 
 export const SharedResourceArea: React.FC<{
   game: SharedResourceArea_GameFragment;
-}> = ({ game }) => {
+  refetch: () => void;
+}> = ({ game, refetch }) => {
   return (
     <>
-      <Market game={game} />
+      <Market game={game} refetch={refetch} />
       <Typography variant="caption" display="block">
         Outskirts: {game.outskirts.length}
       </Typography>

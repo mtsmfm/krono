@@ -76,11 +76,13 @@ export default function Home() {
 
       <Divider />
 
-      <SharedResourceArea game={result.data.game} />
+      <SharedResourceArea game={result.data.game} refetch={refetch} />
 
       <Divider />
 
-      {result.data.game.me && <MyPlayArea me={result.data.game.me} />}
+      {result.data.game.me && (
+        <MyPlayArea me={result.data.game.me} refetch={refetch} />
+      )}
 
       <Divider />
 
