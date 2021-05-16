@@ -91,6 +91,21 @@ const AwaitingAction = objectType({
 const Game = objectType({
   name: "Game",
   definition(t) {
+    t.field("me", {
+      type: Player,
+      resolve(g, _, { playerId }) {
+        return g.players.find((p) => p.id === playerId) || null;
+      },
+    });
+    t.list.nonNull.field("opponents", {
+      type: Player,
+      resolve(g, _, { playerId }) {
+        if (!playerId) {
+          return null;
+        }
+        return g.players.filter((p) => p.id !== playerId);
+      },
+    });
     t.nonNull.list.nonNull.field("players", { type: Player });
     t.nonNull.list.nonNull.field("outskirts", { type: Card });
     t.nonNull.list.field("supplyPile", { type: Card });

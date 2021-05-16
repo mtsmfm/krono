@@ -1,48 +1,35 @@
-import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import React, { useEffect, useState } from "react";
-import { Card } from "../components/Card";
 import { useRootQuery } from "../generated/urql";
 import Divider from "@material-ui/core/Divider";
-import { Market } from "../components/Market";
+import { MyPlayArea } from "../components/MyPlayArea";
+import { OpponentsPlayArea } from "../components/OpponentsPlayArea";
+import { SharedResourceArea } from "../components/SharedResouceArea";
 
 /* GraphQL */ `
 query Root {
   game {
+    me {
+      ...MyPlayArea_me
+    }
+    opponents {
+      ...OpponentsPlayArea_opponent
+    }
     players {
       id
-      hand {
-        id
-        ...Card_card
-      }
-      currentCoins
-      discardPile {
-        ...Card_card
-      }
-      drawPile {
-        ...Card_card
-      }
-      linkRemains
-      playingCards {
-        ...Card_card
-      }
-      successionPoints
     }
     awaitingActions {
       playerId
       type
     }
-    curseCards { ...Card_card }
     firstCoronationCeremonyDeclaredPlayerIndex
-    outskirts { ...Card_card }
     overtime
-    princessCards { ...Card_card }
     turnPlayerIndex
     winnerPlayerId
-    ...Market_game
+    ...SharedResourceArea_game
   }
 }
 `;
@@ -77,7 +64,21 @@ export default function Home() {
 
   return (
     <Container>
-      <Market game={result.data.game} />
+      <Grid container>
+        {result.data.game.opponents?.map((o) => (
+          <Grid item key={o.id} xs={4}>
+            <OpponentsPlayArea opponent={o} />
+          </Grid>
+        ))}
+      </Grid>
+
+      <Divider />
+
+      <SharedResourceArea game={result.data.game} />
+
+      <Divider />
+
+      {result.data.game.me && <MyPlayArea me={result.data.game.me} />}
 
       <Divider />
 
@@ -93,32 +94,6 @@ export default function Home() {
           </MenuItem>
         ))}
       </Select>
-
-      <Divider />
-
-      {result.data.game.players.map((p) => (
-        <div key={p.id}>
-          <Typography variant="subtitle1">{p.id}</Typography>
-          <Typography variant="caption">Hand</Typography>
-          <Grid container>
-            {p.hand.map((c, i) => (
-              <Grid item key={c?.id || i} xs={1}>
-                <Card card={c}></Card>
-              </Grid>
-            ))}
-          </Grid>
-          <Typography variant="caption" display="block">
-            Current coins: {p.currentCoins}
-          </Typography>
-          <Typography variant="caption" display="block">
-            Discard pile: {p.discardPile.length}
-          </Typography>
-          <Typography variant="caption" display="block">
-            Draw pile: {p.drawPile.length}
-          </Typography>
-          <Divider />
-        </div>
-      ))}
     </Container>
   );
 }
