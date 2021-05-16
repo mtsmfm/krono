@@ -54,7 +54,8 @@ describe("krono", () => {
       ).toEqual(5 - index);
     });
 
-    const player = state.players.find((p) => p.id === playerIds[0])!;
+    let player = state.players.find((p) => p.id === playerIds[0])!;
+    expect(player.currentCoins).toEqual(0);
 
     state = reducer(state, {
       type: "PLAY_HAND",
@@ -63,6 +64,16 @@ describe("krono", () => {
         (c) => findById(c.cardMasterId)!.type === "territory"
       )!.id,
     });
+
+    player = state.players.find((p) => p.id === playerIds[0])!;
+    expect(player.currentCoins).toEqual(1);
+    expect(state.turnPlayerIndex).toEqual(0);
+
+    state = reducer(state, {
+      type: "END_TURN",
+      playerId: player.id,
+    });
+    expect(state.turnPlayerIndex).toEqual(1);
 
     console.dir(state);
   });

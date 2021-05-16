@@ -419,7 +419,7 @@ export const reducer = produce((state: State, action: Action) => {
         state.turnPlayerIndex =
           (state.turnPlayerIndex + 1) % state.players.length;
       } while (
-        !state.overtime ||
+        state.overtime &&
         state.players[state.turnPlayerIndex].coronationCeremonyDeclared
       );
 
