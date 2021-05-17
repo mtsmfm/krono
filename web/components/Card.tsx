@@ -15,9 +15,10 @@ fragment Card_card on Card {
 export const Card: React.FC<{
   card: Card_CardFragment | null;
   onClick?: () => void;
-}> = ({ card, onClick }) => {
+  style?: React.CSSProperties;
+}> = ({ card, onClick, style }) => {
   return (
-    <MuiCard>
+    <MuiCard style={style}>
       {onClick ? (
         <CardActionArea onClick={onClick}>
           <CardContent>
