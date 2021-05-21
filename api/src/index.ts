@@ -1,5 +1,5 @@
 import { ApolloServer } from "apollo-server";
-import { mkdirSync, readFileSync, statSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import {
   makeSchema,
   queryType,
@@ -290,7 +290,7 @@ server.listen().then(({ url }) => {
 let state: State;
 const stateFilePath = join(__dirname, "..", "tmp", "state.json");
 mkdirSync(dirname(stateFilePath), { recursive: true });
-if (statSync(stateFilePath).isFile()) {
+if (existsSync(stateFilePath)) {
   state = JSON.parse(readFileSync(stateFilePath, "utf8"));
 } else {
   state = initialState;
