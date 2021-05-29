@@ -76,6 +76,7 @@ const Player = objectType({
         return gameState.awaitingActions.filter((a) => a.playerId === p.id);
       },
     });
+    t.nonNull.boolean("isBot");
   },
 });
 
@@ -97,6 +98,18 @@ const AwaitingAction = objectType({
   definition(t) {
     t.nonNull.id("playerId");
     t.nonNull.field("type", { type: ActionType });
+  },
+});
+
+const History = objectType({
+  name: "History",
+  definition(t) {
+    t.nonNull.field("game", {
+      type: Game,
+      resolve(h) {
+        return h.state;
+      },
+    });
   },
 });
 
@@ -144,6 +157,15 @@ const Game = objectType({
         }
       },
     });
+    t.nonNull.list.nonNull.field("histories", {
+      type: History,
+      args: {
+        count: nonNull(intArg()),
+      },
+      resolve(g, { count }) {
+        return g.histories.slice(-count);
+      },
+    });
   },
 });
 
@@ -163,11 +185,13 @@ const Mutation = mutationType({
     t.boolean("init", {
       args: {
         playerIds: nonNull(list(nonNull(stringArg()))),
+        botCount: nonNull(intArg()),
       },
-      resolve(_, { playerIds }) {
+      resolve(_, { playerIds, botCount }) {
         state = reducer(state, {
           type: "INIT",
           playerIds,
+          botCount,
         });
 
         return true;
